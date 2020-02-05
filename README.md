@@ -13,7 +13,7 @@ Steps to setup scenario:
   - Download/Clone repository
   - Install SQLite from http://sqlite.org/download.html
   - Add SQLite as a development dependency to the project (root folder): npm install --save-dev sqlite3
-  - create database and fill it with example data (in project root folder): cds deploy db --to sqlite:db/flight-model.db
+  - create database and fill it with example data (in project root folder): npm run deploy
   - Download/Install the Cloud Foundry CLI https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
   - Create Trial account for Cloud Foundry on SAP Cloud Platform https://developers.sap.com/tutorials/hcp-create-trial-account.html
   - Build application using mvn clean install
