@@ -12,7 +12,7 @@ Steps to setup scenario:
   - Install cds development kit globally: npm i -g @sap/cds-dk
   - Download/Clone repository
   - Install SQLite from http://sqlite.org/download.html
-  - Add SQLite as a development dependency to the project (root folder): npm install --save-dev sqlite3
+  - NPM Install (root folder): npm install
   - create database and fill it with example data (in project root folder): npm run deploy
   - Build application using mvn clean install
   - Download/Install the Cloud Foundry CLI https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
