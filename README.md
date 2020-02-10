@@ -15,6 +15,7 @@ Steps to setup scenario:
   - NPM Install (root folder): npm install
   - create database and fill it with example data (in project root folder): npm run deploy
   - Build application using mvn clean install
+  - Run application using mvn spring-boot:run
   - Download/Install the Cloud Foundry CLI https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
   - Create Trial account for Cloud Foundry on SAP Cloud Platform https://developers.sap.com/tutorials/hcp-create-trial-account.html
   - Build application using mvn clean install
