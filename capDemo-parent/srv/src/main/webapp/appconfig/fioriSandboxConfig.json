@@ -1,0 +1,88 @@
+{
+    "services": {
+        "LaunchPage": {            
+            "adapter": {
+                "config": {
+                    "catalogs": [
+                        {
+                            "id": "magazines_catalog",
+                            "title": "Magazines Application Catalog",
+                            "tiles": [
+                                {
+                                    "id": "EditionsManage",
+                                    "title": "Manage Editions",
+                                    "size": "1×1",
+                                    "tileType": "sap.ushell.ui.tile.DynamicTile",
+                                    "numberValue": "2",
+                                    "properties": {
+                                        "chipId": "catalogTile_001",
+                                        "title": "Manage Editions",
+                                        "info": "Display/Edit Editions",
+                                        "targetURL": "#Editions-manage",
+                                        "serviceUrl": "/odata/v4/EditionsService/getNumberOfEditionsForDynamicTile()"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "groups": [
+                        {
+                            "id": "magazines_group",
+                            "title": "Magazines Application Group",
+                            "isPreset": true,
+                            "isVisible": true,
+                            "isGroupLocked": false,
+                            "tiles": [
+                                {
+                                    "id": "EditionsManage",
+                                    "title": "Manage Editions",
+                                    "size": "1×1",
+                                    "tileType": "sap.ushell.ui.tile.DynamicTile",
+                                    "properties": {
+                                        "chipId": "catalogTile_001",
+                                        "title": "Manage Editions",
+                                        "info": "Display/Edit Editions",
+                                        "targetURL": "#Editions-manage",
+                                        "numberValue": "2",
+                                        "serviceUrl": "/odata/v4/EditionsService/getNumberOfEditionsForDynamicTile()"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "NavTargetResolution": {
+            "config": {
+                "enableClientSideTargetResolution": true
+            }
+        },
+        "ClientSideTargetResolution": {
+            "adapter": {
+                "config": {
+                    "inbounds": {
+                        "actionEditions": {
+                            "semanticObject": "Editions",
+                            "action": "manage",
+                            "title": "Manage Editions",
+                            "signature": {
+                                "parameters": {},
+                                "additionalParameters": "allowed"
+                            },
+                            "resolutionResult": {
+                                "applicationType": "SAPUI5",
+                                "additionalInformation": "SAPUI5.Component=editions",
+                                "url": "/"
+                            },
+                            "indicatorDataSource": {
+                                "path": "/odata/v4/EditionsService/Editions/$count",
+                                "refresh": 600
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

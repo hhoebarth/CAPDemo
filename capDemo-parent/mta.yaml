@@ -1,0 +1,40 @@
+_schema-version: 2.0.0
+ID: capDemo
+version: 1.0.0
+modules:
+  - name: capDemo-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: capDemo-db-hdi-container
+  - name: capDemo-srv
+    type: java
+    path: srv
+    parameters:
+      memory: 512M
+    provides:
+      - name: srv_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: capDemo-db-hdi-container
+        properties:
+          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+      - name: capDemo-uaa
+resources:
+  - name: capDemo-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
+  - name: capDemo-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: application
+      service: xsuaa
+      config:
+        xsappname: capDemo-${space}
+        tenant-mode: dedicated

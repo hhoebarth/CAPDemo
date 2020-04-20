@@ -1,0 +1,2143 @@
+{
+  "namespace": "de.javamagazin",
+  "definitions": {
+    "Country": {
+      "kind": "type",
+      "@description": "{i18n>CountryCode.Description}",
+      "@title": "{i18n>Country}",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Currency": {
+      "kind": "type",
+      "@description": "{i18n>CurrencyCode.Description}",
+      "@title": "{i18n>Currency}",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Language": {
+      "kind": "type",
+      "@description": "{i18n>LanguageCode.Description}",
+      "@title": "{i18n>Language}",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "User": {
+      "kind": "type",
+      "@description": "{i18n>UserID.Description}",
+      "@title": "{i18n>UserID}",
+      "type": "cds.String",
+      "length": 255
+    },
+    "cuid": {
+      "kind": "entity",
+      "abstract": true,
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "de.javamagazin.Articles": {
+      "kind": "entity",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "header": {
+          "type": "cds.String"
+        },
+        "description": {
+          "type": "cds.String"
+        },
+        "edition": {
+          "type": "cds.Association",
+          "target": "de.javamagazin.Editions",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ],
+          "notNull": true
+        },
+        "authors": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "de.javamagazin.Articles2Authors",
+          "on": [
+            {
+              "ref": [
+                "authors",
+                "article"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "keyword1": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "keyWord2": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "startPage": {
+          "type": "cds.Integer"
+        },
+        "endPage": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "de.javamagazin.Articles2Authors": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "elements": {
+        "article": {
+          "key": true,
+          "type": "cds.Association",
+          "target": "de.javamagazin.Articles",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "author": {
+          "key": true,
+          "type": "cds.Association",
+          "target": "de.javamagazin.Authors",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "de.javamagazin.Authors": {
+      "kind": "entity",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "firstName": {
+          "type": "cds.String"
+        },
+        "lastName": {
+          "type": "cds.String"
+        },
+        "email": {
+          "type": "cds.String"
+        },
+        "country": {
+          "@description": "{i18n>CountryCode.Description}",
+          "@title": "{i18n>Country}",
+          "type": "Country",
+          "target": "sap.common.Countries",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "articles": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "de.javamagazin.Articles2Authors",
+          "on": [
+            {
+              "ref": [
+                "articles",
+                "author"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "de.javamagazin.EditionType": {
+      "kind": "type",
+      "type": "cds.String",
+      "length": 1,
+      "enum": {
+        "ordinary": {
+          "val": "O"
+        },
+        "special": {
+          "val": "S"
+        }
+      }
+    },
+    "de.javamagazin.Editions": {
+      "kind": "entity",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "issueNumber": {
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true
+        },
+        "magazine": {
+          "type": "cds.Association",
+          "target": "de.javamagazin.Magazines",
+          "on": [
+            {
+              "ref": [
+                "magazine",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "magazine_code"
+              ]
+            }
+          ]
+        },
+        "magazine_code": {
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "default": {
+            "val": "JM"
+          }
+        },
+        "issueDate": {
+          "type": "cds.Date"
+        },
+        "mainTopic": {
+          "type": "cds.String"
+        },
+        "numberPages": {
+          "type": "cds.Integer"
+        },
+        "price": {
+          "type": "cds.Decimal",
+          "precision": 10,
+          "scale": 2
+        },
+        "currency": {
+          "@description": "{i18n>CurrencyCode.Description}",
+          "@title": "{i18n>Currency}",
+          "type": "Currency",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "EUR"
+          }
+        },
+        "articles": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "de.javamagazin.Articles",
+          "on": [
+            {
+              "ref": [
+                "articles",
+                "edition"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "editionType": {
+          "@Core.Computed": true,
+          "virtual": true,
+          "type": "de.javamagazin.EditionType",
+          "length": 1
+        },
+        "imageUrl": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "de.javamagazin.Magazines": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "de.javamagazin.Magazines_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "de.javamagazin.Magazines_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "de.javamagazin.Magazines_texts": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "de.javamagazin.imageUrls": {
+      "kind": "type",
+      "items": {
+        "type": "cds.String"
+      }
+    },
+    "localized.de.javamagazin.Articles": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "de.javamagazin.Articles"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "header": {
+          "type": "cds.String"
+        },
+        "description": {
+          "type": "cds.String"
+        },
+        "edition": {
+          "type": "cds.Association",
+          "target": "localized.de.javamagazin.Editions",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ],
+          "notNull": true
+        },
+        "authors": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "localized.de.javamagazin.Articles2Authors",
+          "on": [
+            {
+              "ref": [
+                "authors",
+                "article"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "keyword1": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "keyWord2": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "startPage": {
+          "type": "cds.Integer"
+        },
+        "endPage": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "localized.de.javamagazin.Articles2Authors": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "de.javamagazin.Articles2Authors"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*"
+          ]
+        }
+      },
+      "elements": {
+        "article": {
+          "key": true,
+          "type": "cds.Association",
+          "target": "localized.de.javamagazin.Articles",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "author": {
+          "key": true,
+          "type": "cds.Association",
+          "target": "localized.de.javamagazin.Authors",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.de.javamagazin.Authors": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "de.javamagazin.Authors"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "firstName": {
+          "type": "cds.String"
+        },
+        "lastName": {
+          "type": "cds.String"
+        },
+        "email": {
+          "type": "cds.String"
+        },
+        "country": {
+          "@description": "{i18n>CountryCode.Description}",
+          "@title": "{i18n>Country}",
+          "type": "Country",
+          "target": "localized.sap.common.Countries",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "articles": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "localized.de.javamagazin.Articles2Authors",
+          "on": [
+            {
+              "ref": [
+                "articles",
+                "author"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.de.javamagazin.Editions": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "de.javamagazin.Editions"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "issueNumber": {
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true
+        },
+        "magazine": {
+          "type": "cds.Association",
+          "target": "localized.de.javamagazin.Magazines",
+          "on": [
+            {
+              "ref": [
+                "magazine",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "magazine_code"
+              ]
+            }
+          ]
+        },
+        "magazine_code": {
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "default": {
+            "val": "JM"
+          }
+        },
+        "issueDate": {
+          "type": "cds.Date"
+        },
+        "mainTopic": {
+          "type": "cds.String"
+        },
+        "numberPages": {
+          "type": "cds.Integer"
+        },
+        "price": {
+          "type": "cds.Decimal",
+          "precision": 10,
+          "scale": 2
+        },
+        "currency": {
+          "@description": "{i18n>CurrencyCode.Description}",
+          "@title": "{i18n>Currency}",
+          "type": "Currency",
+          "target": "localized.sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "EUR"
+          }
+        },
+        "articles": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "localized.de.javamagazin.Articles",
+          "on": [
+            {
+              "ref": [
+                "articles",
+                "edition"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "editionType": {
+          "@Core.Computed": true,
+          "virtual": true,
+          "type": "de.javamagazin.EditionType",
+          "length": 1
+        },
+        "imageUrl": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "localized.de.javamagazin.Magazines": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "de.javamagazin.Magazines"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*",
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "name"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "name"
+                  ]
+                }
+              ],
+              "as": "name"
+            },
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "descr"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "descr"
+                  ]
+                }
+              ],
+              "as": "descr"
+            }
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "de.javamagazin.Magazines_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "de.javamagazin.Magazines_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.sap.common.Countries": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "sap.common.Countries"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*",
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "name"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "name"
+                  ]
+                }
+              ],
+              "as": "name"
+            },
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "descr"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "descr"
+                  ]
+                }
+              ],
+              "as": "descr"
+            }
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.sap.common.Currencies": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "sap.common.Currencies"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*",
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "name"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "name"
+                  ]
+                }
+              ],
+              "as": "name"
+            },
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "descr"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "descr"
+                  ]
+                }
+              ],
+              "as": "descr"
+            }
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.sap.common.Languages": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "sap.common.Languages"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*",
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "name"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "name"
+                  ]
+                }
+              ],
+              "as": "name"
+            },
+            {
+              "func": "coalesce",
+              "args": [
+                {
+                  "ref": [
+                    "L",
+                    "localized",
+                    "descr"
+                  ]
+                },
+                {
+                  "ref": [
+                    "L",
+                    "descr"
+                  ]
+                }
+              ],
+              "as": "descr"
+            }
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@Core.Computed": true,
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "managed": {
+      "kind": "type",
+      "elements": {
+        "createdAt": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedAt}",
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>CreatedBy}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedAt}",
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "@title": "{i18n>ChangedBy}",
+          "type": "User",
+          "length": 255
+        }
+      },
+      "$syntax": "aspect"
+    },
+    "sap.common": {
+      "kind": "context"
+    },
+    "sap.common.CodeList": {
+      "kind": "type",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        }
+      },
+      "$syntax": "aspect"
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Countries_texts": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CountryCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Currencies_texts": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "@UI.Identification": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.odata.valuelist": true,
+      "@cds.persistence.skip": "if-unused",
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages_texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages_texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Languages_texts": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        }
+      }
+    },
+    "temporal": {
+      "kind": "type",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.DateTime"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.DateTime"
+        }
+      },
+      "$syntax": "aspect"
+    }
+  },
+  "meta": {
+    "creator": "CDS Compiler v1.24.4"
+  },
+  "$version": "1.0"
+}

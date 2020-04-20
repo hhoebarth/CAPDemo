@@ -1,0 +1,3 @@
+ID,issueNumber,magazine_code,modifiedAt,createdAt,createdBy,modifiedBy,issueDate,MainTopic,numberPages,price,currency_code,imageUrl
+7e2f2640-6866-4dcf-8f4d-3030aa831cbc,10.2019,JM,,2019-08-01 00:00:00.000,herbert.hoebarth@gmx.at,,2019-09-01,Die Wilde 13,100,9.80,EUR,https://s3.eu-west-1.amazonaws.com/redsys-prod/issues/cdad8e31627d80c3665251eb/images/cover_xxx_issues/cdad8e31627d80c3665251eb/images/cover.jpg
+7e2f2640-6866-4dcf-8f4d-3030aa842cad,02.2020,JM,,2019-12-01 00:00:00.000,herbert.hoebarth@gmx.at,,2020-01-06,10 Jahre DevOps,100,9.80,EUR,https://s3.eu-west-1.amazonaws.com/redsys-prod/issues/7ed0651b019f4d1aa7eef44d/images/cover_xxx_JM2_20_cover@2x_1576742557968.jpg

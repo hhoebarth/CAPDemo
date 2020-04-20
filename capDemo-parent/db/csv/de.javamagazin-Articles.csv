@@ -1,0 +1,3 @@
+ID,edition_ID,modifiedAt,createdAt,createdBy,modifiedBy,header,description,keyword1,keyword2,startPage,endPage
+7e2f2640-6866-4dcf-8f4d-3030aa831cad,7e2f2640-6866-4dcf-8f4d-3030aa831cbc,,2019-08-01 00:00:00.000,herbert.hoebarth@gmx.at,,Java-Anwendung in der SAP JVM,Entwicklung einer Java-Anwendung zur Erzeugung vorlagenbasierter Berichte in der SAP JVM,SAP JVM,,10,17
+7e2f2640-6866-4dcf-8f4d-3031aa831cad,7e2f2640-6866-4dcf-8f4d-3030aa842cad,,2019-12-01 00:00:00.000,herbert.hoebarth@gmx.at,,Alte Welt - neue Welt,Entwicklung von Microservices in der SAP CLoud Platform,SAP Cloud Platform,Microservices,68,74
